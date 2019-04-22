@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./index.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:rich="http://richfaces.org/rich">
+
+    <ui:define name="content">
+        <f:view>
+            <h:form>
+                <h1><h:outputText value="Liste des utilisateurs"/></h1>
+                <rich:extendedDataTable value="#{utilisateurController.listUtilisateur}" var="item">
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Code"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idutilisateur}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Prénom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.prenom}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Sexe"/>
+                        </f:facet>
+                        <h:outputText value="#{item.sexe}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Date de naissance"/>
+                        </f:facet>
+                        <h:outputText value="#{item.datenaiss}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Login"/>
+                        </f:facet>
+                        <h:outputText value="#{item.login}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Mot de passe"/>
+                        </f:facet>
+                        <h:outputText value="#{item.mdp}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Lieu de naissance"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idregion.nom}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nationalité"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idpays.nom}"/>
+                    </rich:column>
+                </rich:extendedDataTable>
+                
+                <h:commandButton type="button" onclick="#{rich:component('c_user')}.show()" value="Ajouter"/>
+                
+                <rich:popupPanel header="Nouvel utilisateur" autosized="true" id="c_user" domElementAttachment="form" show="false">
+                    <h:form>
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Nom:" for="nom" />
+                            <h:inputText id="nom" value="#{utilisateurController.utilisateur.nom}" title="Nom" />
+                            
+                            <h:outputLabel value="Prenom:" for="prenom" />
+                            <h:inputText id="prenom" value="#{utilisateurController.utilisateur.prenom}" title="Prenom" />
+                            
+                            <h:outputLabel value="Sexe:" for="sexe" />
+                            <h:selectOneMenu id="sexe" value="#{utilisateurController.utilisateur.sexe}" title="Sexe" >
+                                <f:selectItem itemLabel="" itemValue=""/>
+                                <f:selectItem itemLabel="Féminin" itemValue="Féminin"/>
+                                <f:selectItem itemLabel="Masculin" itemValue="Masculin"/>
+                            </h:selectOneMenu>
+                            
+                            <h:outputLabel value="Date de naissance:" for="datenaiss" />
+                            <rich:calendar id="datenaiss" value="#{utilisateurController.utilisateur.datenaiss}" >
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </rich:calendar>
+                            
+                            <h:outputLabel value="Login:" for="login" />
+                            <h:inputText id="login" value="#{utilisateurController.utilisateur.login}" title="Login" />
+                            
+                            <h:outputLabel value="Mdp:" for="mdp" />
+                            <h:inputSecret id="mdp" value="#{utilisateurController.utilisateur.mdp}" title="Mdp" />
+                            
+                            <h:outputLabel value="Idregion:" for="idregion" />
+                            <h:selectOneMenu id="idregion" value="#{utilisateurController.utilisateur.idregion}" title="Idregion" >
+                                <!-- TODO: update below reference to list of available items-->
+                                <f:selectItems value="#{fixme}"/>
+                            </h:selectOneMenu>
+                            
+                            <h:outputLabel value="Idpays:" for="idpays" />
+                            <h:selectOneMenu id="idpays" value="#{utilisateurController.utilisateur.idpays}" title="Idpays" >
+                                <!-- TODO: update below reference to list of available items-->
+                                <f:selectItems value="#{fixme}"/>
+                            </h:selectOneMenu>
+                        </h:panelGrid>
+                        
+                        <h:panelGrid columns="2">
+                            <h:commandButton type="button" value="Annuler" style="color: red;" onclick="#{rich:component('c_user')}.hide()" />
+                            <h:commandButton value="Enregistrer"/>
+                        </h:panelGrid>
+                    </h:form>
+                </rich:popupPanel>
+                
+            </h:form>
+        </f:view>
+
+    </ui:define>
+
+</ui:composition>

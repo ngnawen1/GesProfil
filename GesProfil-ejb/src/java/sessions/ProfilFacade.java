@@ -1,0 +1,30 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package sessions;
+
+import entities.Profil;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+/**
+ *
+ * @author Lucien FOTSA
+ */
+@Stateless
+public class ProfilFacade extends AbstractFacade<Profil> implements ProfilFacadeLocal {
+    @PersistenceContext(unitName = "GesProfil-ejbPU")
+    private EntityManager em;
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+
+    public ProfilFacade() {
+        super(Profil.class);
+    }
+    
+}

@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./index.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j">
+
+    <meta>
+        <f:viewParam name="msg" value="#{paysController.msg}"/>
+        <f:viewParam name="showMsg" value="#{paysController.showMsg}"/>
+    </meta>
+    
+    <ui:define name="content">
+        <f:view>
+            
+            <rich:notify stayTime="2000" rendered="#{paysController.showMsg}">
+                <f:facet name="detail">
+                    <h:outputText value="#{paysController.msg}"/>
+                </f:facet>
+            </rich:notify>
+            
+            <h:form>
+                <h1><h:outputText value="Liste des pays"/></h1>
+                <rich:extendedDataTable value="#{paysController.listPays}" var="item">
+                    <rich:column sortOrder="ascending" sortBy="#{item.idpays}">
+                        <f:facet name="header">
+                            <h:outputText value="Code"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idpays}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Modification"/>
+                        </f:facet>
+                        <a4j:commandButton actionListener="#{paysController.prepareEdit()}" render="m_pays,f_m_pays" oncomplete="#{rich:component('m_pays')}.show()" value="Modifier">
+                            <f:setPropertyActionListener value="#{item}" target="#{paysController.pays}"/>
+                        </a4j:commandButton>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Suppression"/>
+                        </f:facet>
+                        <a4j:commandButton actionListener="#{paysController.prepareEdit()}" render="s_pays,f_s_pays" oncomplete="#{rich:component('s_pays')}.show()" value="Supprimer">
+                            <f:setPropertyActionListener value="#{item}" target="#{paysController.pays}"/>
+                        </a4j:commandButton>
+                    </rich:column>
+                </rich:extendedDataTable>
+                
+                <a4j:commandButton actionListener="#{paysController.prepareCreate()}" render="c_pays,f_c_pays" oncomplete="#{rich:component('c_pays')}.show()" value="Ajouter" />
+                <h:commandButton value="#{lm.Imprimer}" immediate="true" style="color: green;" action="#{paysController.imprimer()}"/>
+                <h:commandButton value="Fermer" immediate="true" style="color: red;" action="index.xhtml?faces-redirect=true"/>
+                
+                <!-- formulaires !-->
+                
+                <rich:popupPanel id="c_pays" show="false" domElementAttachment="form" autosized="true" header="Nouveau pays">
+                    <h:form id="f_c_pays">
+                        <h:panelGrid columns="3">
+                            <h:outputLabel value="Nom"/>
+                            <h:inputText value="#{paysController.pays.nom}" required="true" requiredMessage="Champ obligatoire" id="c_nom"/>
+                            <rich:message for="c_nom"/>
+                        </h:panelGrid>
+                        
+                        <h:panelGrid columns="2">
+                            <h:commandButton value="Annuler" type="button" onclick="#{rich:component('c_pays')}.hide()" style="color: red;"/>
+                            <a4j:commandButton action="#{paysController.savePays()}" render="c_nom" value="Enregistrer"/>
+                        </h:panelGrid>
+                    </h:form>
+                </rich:popupPanel>
+                
+                <!-- formulaire de modification !-->
+                
+                <rich:popupPanel id="m_pays" show="false" domElementAttachment="form" autosized="true" header="Modifier un pays">
+                    <h:form id="f_m_pays">
+                        <h:panelGrid columns="3">
+                            <h:outputLabel value="Nom"/>
+                            <h:inputText value="#{paysController.pays.nom}" required="true" requiredMessage="Champ obligatoire" id="m_nom"/>
+                            <rich:message for="m_nom"/>
+                        </h:panelGrid>
+                        
+                        <h:panelGrid columns="2">
+                            <h:commandButton value="Annuler" type="button" onclick="#{rich:component('m_pays')}.hide()" style="color: red;"/>
+                            <a4j:commandButton action="#{paysController.editPays()}" render="m_nom" value="Modifier"/>
+                        </h:panelGrid>
+                    </h:form>
+                </rich:popupPanel>
+                
+                <!-- formulaire de suppression !-->
+                
+                <rich:popupPanel id="s_pays" show="false" domElementAttachment="form" autosized="true" header="Supprimer un pays">
+                    <h:form id="f_s_pays">
+                        <h:outputText value="Voulez-vous réellement supprimer le pays : #{paysController.pays.nom} ?"/>
+                        
+                        <h:panelGrid columns="2">
+                            <h:commandButton value="Annuler" type="button" onclick="#{rich:component('s_pays')}.hide()" style="color: red;"/>
+                            <a4j:commandButton action="#{paysController.deletePays()}" value="Supprimer"/>
+                        </h:panelGrid>
+                    </h:form>
+                </rich:popupPanel>
+            </h:form>
+        </f:view>
+
+    </ui:define>
+
+</ui:composition>

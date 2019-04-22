@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="./resources/css/default.css" rel="stylesheet" type="text/css" />
+        <link href="./resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
+        <title>GesProfil</title>
+    </h:head>
+
+    <h:body>
+        <f:view locale="#{sessionController.language}">
+            <h:form>
+                <div id="top">
+                    <h:outputText value="#{lm.Gest_profil}" style="font-size: 16pt; font-style: italic; font-weight: bold;" />
+                </div>
+
+                <rich:toolbar height="30">
+                    <rich:dropDownMenu label="#{lm.Parametrage}" style="font-size: 14pt;">
+                        <rich:menuItem immediate="true" action="#{paysController.pays()}" label="#{lm.List_pays}" style="font-size: 12pt;"/>
+                        <rich:menuItem immediate="true" action="#{utilisateurController.utilisateur()}" label="Liste des utilisateurs" style="font-size: 12pt;"/>
+                    </rich:dropDownMenu>
+                </rich:toolbar>
+                
+                <rich:toolbar>
+                    <h:commandButton value="#{lm.Francais}" immediate="true" action="#{sessionController.inFrench()}"/>
+                    <h:commandButton value="#{lm.Anglais}" immediate="true" action="#{sessionController.inEnglish()}"/>
+                </rich:toolbar>
+
+                <div id="content" class="center_content">
+                    <ui:insert name="content"></ui:insert>
+                </div>
+
+                <div id="bottom">
+                    <h:outputText value="&copy; Copyright 2015" style="font-size: 16pt; font-style: italic; font-weight: bold;" />
+                </div>
+            </h:form>
+        </f:view>
+    </h:body>
+
+</html>
